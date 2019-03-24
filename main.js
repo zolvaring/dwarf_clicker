@@ -23,6 +23,9 @@ class Dwarf {
     'pray_to_gods'
   ];
 
+  static class_name = String('Dwarf');
+  static plural_class_name = String('Dwarves');
+
   constructor() {
     this.name = 'dwarf';
     this.id = 'blerp';
@@ -80,14 +83,42 @@ class PageController {
     });
     */
 
+    
+    //let drones_seen = [];
+    let drones_tally = {}
+    Game.player.drones.forEach(function(drone) {
+      drones_tally[drone.constructor.plural_class_name] = (drones_tally[drone.constructor.plural_class_name] || 0) + 1;
+    });
+    
+    let parent_div = document.getElementById('drones_div');
+    parent_div.innerHTML = ''
+    //Game.player.drones.forEach(function(drone) {
+    for (const [name, tally] of Object.entries(drones_tally)) {
+    
+      let element = document.createElement('p');
+      element.setAttribute('id', `drones_${name}_p`);
+      let element_id = String(`drones_${name}_p`);
+      //element.setAttribute('id', `drone_${drone.id}_div`);
+
+      if ($(`#${element_id}`).length === 0) {
+        parent_div.appendChild(element);
+      }
+
+      element.innerHTML = String(`${name}: ${tally}`);
+
+    };
+
+    /*
     let parent_div = document.getElementById('drones_div');
     parent_div.innerHTML = ''
     Game.player.drones.forEach(function(drone) {
       let element = document.createElement('p');
       element.setAttribute('id', `drone_${drone.id}_div`);
-      element.innerHTML = drone.constructor.name;
+      //element.innerHTML = drone.constructor.name;
+      element.innerHTML = drone.constructor.class_name;
       parent_div.appendChild(element);
     });
+    */
 
 
     parent_div = document.getElementById('tasks_div')
